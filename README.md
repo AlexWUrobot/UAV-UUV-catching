@@ -6,5 +6,5 @@ Output: min snap trajectory
 
 time affects flight attitude and speed
 
-![](quadrotor_catch.png)
+![](UAV_catch.png)
 
