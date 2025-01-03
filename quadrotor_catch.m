@@ -95,10 +95,14 @@ end
 % UAVspeed = 3;
 % timepoints = cumsum(distance/UAVspeed);
 
-%UAVspeed = [3, 3, 5, 3];   % velocity is uncontrollable because we control attitude "pitch_to_quaternion"
-UAVspeed = 2;  
+UAVspeed = [3, 3, 5, 3];   % velocity should control real UAV attitude, "pitch_to_quaternion" cannot !
+%UAVspeed = 2;  
 timepoints = cumsum(distance./UAVspeed); % time stamp, when to arrive the point
-nSamples = 100;
+nSamples = 100;  % output number of points
+
+total_time_of_motion = timepoints(end);
+sample_time_interval = total_time_of_motion/nSamples;
+timeline = ((1:1:nSamples)-1)*sample_time_interval; % start from 0 sec
 
 
 % Compute states along the trajectory
@@ -171,28 +175,35 @@ title("UAV catching UUV motion planning")
 
 figure()
 subplot(3,1,1)
-plot(x)
+plot(timeline,x)
 title("UAV poisiton")
 ylabel("x(m)")
 subplot(3,1,2)
-plot(round(y))
+plot(timeline,round(y))
 ylabel("y(m)")
 subplot(3,1,3)
-plot(z)
+plot(timeline,z)
 ylabel("z(m)")
-xlabel("time")
+xlabel("time(sec)")
 
+
+v_x = diff(x)/sample_time_interval;
+v_y = diff(round(y))/sample_time_interval;
+v_z = diff(z)/sample_time_interval;
+%timeline = ((1:1:nSamples-1)-1)*sample_time_interval; % start from 0 sec
+timeline = ((1:1:nSamples-1))*sample_time_interval-sample_time_interval/2; % start from 0 sec, 
+% -sample_time_interval/2, because we want to get the average speed between two sample points
 
 figure()
 subplot(3,1,1)
-plot(diff(x))
+plot(timeline,v_x)
 title("UAV velocity")
-ylabel("x(m)")
+ylabel("x(m/s)")
 subplot(3,1,2)
-plot(diff(round(y)))
-ylabel("y(m)")
+plot(timeline,v_y)
+ylabel("y(m/s)")
 subplot(3,1,3)
-plot(diff(z))
-ylabel("z(m)")
-xlabel("time")
+plot(timeline,v_z)
+ylabel("z(m/s)")
+xlabel("time(sec)")
 
