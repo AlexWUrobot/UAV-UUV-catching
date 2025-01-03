@@ -95,8 +95,9 @@ end
 % UAVspeed = 3;
 % timepoints = cumsum(distance/UAVspeed);
 
-UAVspeed = [3, 3, 5, 3];
-timepoints = cumsum(distance./UAVspeed);
+%UAVspeed = [3, 3, 5, 3];   % velocity is uncontrollable because we control attitude "pitch_to_quaternion"
+UAVspeed = 2;  
+timepoints = cumsum(distance./UAVspeed); % time stamp, when to arrive the point
 nSamples = 100;
 
 
@@ -106,14 +107,14 @@ initialStates = minsnappolytraj(waypoints',timepoints,nSamples,MinSegmentTime=1,
 
 %%
 % Plot map, start pose, and goal pose
-show(omap)
-hold on
-scatter3(startPose(1),startPose(2),startPose(3),30,".r")
-scatter3(goalPose(1),goalPose(2),goalPose(3),30,".g")
+% show(omap)
+% hold on
+% scatter3(startPose(1),startPose(2),startPose(3),30,".r")
+% scatter3(goalPose(1),goalPose(2),goalPose(3),30,".g")
 
 % Plot the waypoints
-%plot3(pthObj.States(:,1),pthObj.States(:,2),pthObj.States(:,3),"-g")
-%plot3(waypoints(:,1),waypoints(:,2),waypoints(:,3),"-g")
+% plot3(pthObj.States(:,1),pthObj.States(:,2),pthObj.States(:,3),"-g")
+% plot3(waypoints(:,1),waypoints(:,2),waypoints(:,3),"-g")
 
 
 % Plot the minimum snap trajectory
